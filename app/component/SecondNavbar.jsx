@@ -37,7 +37,7 @@ export default function SecondNavbar() {
     const fetchBlogs = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`${BASE_URL}/blogs/staticpage`); // Or use BASE_URL if needed
+        const response = await axios.get(`${BASE_URL}/blogs/staticpage?status=true`); // Or use BASE_URL if needed
         setBlogs(response.data.data || []);
       } catch (err) {
         setError(err.message);

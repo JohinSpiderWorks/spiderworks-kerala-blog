@@ -28,7 +28,7 @@ export default function BlogDetail() {
     const fetchBlog = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`${BASE_URL}/blogs/staticpage`);
+        const response = await axios.get(`${BASE_URL}/blogs/staticpage?status=true`);
         const foundBlog = response.data.data.find(b => b.slug === slug);
         if (foundBlog) {
           setBlog(foundBlog);

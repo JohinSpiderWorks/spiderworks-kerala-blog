@@ -68,33 +68,48 @@ const BlogNavbar = ({ isBookmarked, setIsBookmarked, blog, handleShare }) => {
       try {
         const response = await fetch(`${BASE_URL}/blogs/new/menu`);
         const data = await response.json();
-
+    
         if (data.success && data.data.length > 0) {
-          const items = data.data[0].menuItems.map((item) => ({
-            name: item.linkText,
-            href: `/${item.url}`,
-            newWindow: item.newWindow,
-            icon:
-              item.linkText === "Home"
-                ? Home
-                : item.linkText === "Blog"
-                ? BookOpen
-                : item.linkText === "Collections"
-                ? Layers
-                : item.linkText === "Bookmarks"
-                ? Bookmark
-                : BookOpen,
-            color:
-              item.linkText === "Home"
-                ? "from-blue-400 to-cyan-400"
-                : item.linkText === "Blog"
-                ? "from-amber-400 to-pink-500"
-                : item.linkText === "Collections"
-                ? "from-purple-400 to-indigo-400"
-                : item.linkText === "Bookmarks"
-                ? "from-green-400 to-emerald-400"
-                : "from-blue-400 to-cyan-400",
-          }));
+          const items = data.data[0].menuItems.map((item) => {
+            // Format the URL based on your routing structure
+            let href = item.url;
+            
+            // If it's a blog page, prepend '/blog'
+            if (item.url.startsWith('app/')) {
+              href = `/${item.url.replace('app/', '')}`;
+            }
+            // If it's a contact page
+            else if (item.url === 'contact') {
+              href = '/contact';
+            }
+            // Add other specific cases as needed
+            
+            return {
+              name: item.linkText,
+              href: href,
+              newWindow: item.newWindow,
+              icon:
+                item.linkText === "Home"
+                  ? Home
+                  : item.linkText === "Blog"
+                  ? BookOpen
+                  : item.linkText === "Collections"
+                  ? Layers
+                  : item.linkText === "Bookmarks"
+                  ? Bookmark
+                  : BookOpen,
+              color:
+                item.linkText === "Home"
+                  ? "from-blue-400 to-cyan-400"
+                  : item.linkText === "Blog"
+                  ? "from-amber-400 to-pink-500"
+                  : item.linkText === "Collections"
+                  ? "from-purple-400 to-indigo-400"
+                  : item.linkText === "Bookmarks"
+                  ? "from-green-400 to-emerald-400"
+                  : "from-blue-400 to-cyan-400",
+            };
+          });
           setNavItems(items);
         }
       } catch (error) {
@@ -112,8 +127,6 @@ const BlogNavbar = ({ isBookmarked, setIsBookmarked, blog, handleShare }) => {
             icon: BookOpen,
             color: "from-amber-400 to-pink-500",
           },
-          // { name: "Collections", href: "/collections", icon: Layers, color: 'from-purple-400 to-indigo-400' },
-          // { name: "Bookmarks", href: "/bookmarks", icon: Bookmark, color: 'from-green-400 to-emerald-400' },
         ]);
       } finally {
         setLoading(false);
